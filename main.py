@@ -4,10 +4,9 @@ import trafilatura
 OUTPUT_DIR: str = "output"
 
 def main():
-	print("Hello, World!")
-	url: str = "https://edbatista.com/2026/01/how-to-facilitate-a-conflict-on-your-team.html"
+	url: str = "https://krzysztofjankowski.com/floppinux/floppinux-2025.html"
 	result: str = url_to_download(url)	
-	print("End of the program.")
+	
 
 def url_to_download(url: str=None):
 	downloaded: str = trafilatura.fetch_url(url)
