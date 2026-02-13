@@ -1,4 +1,5 @@
 import sys
+import argparse
 import datetime
 import trafilatura
 from pathlib import Path
@@ -40,8 +41,20 @@ def download_and_save_content(url: str) -> None:
 
 def main() -> None:
     """Main entry point."""
-    url = "https://krzysztofjankowski.com/floppinux/floppinux-2025.html"
-    download_and_save_content(url)
+    parser = argparse.ArgumentParser(
+        description="Download article content and save as markdown",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="Example:\n  python main.py https://example.com/article"
+    )
+    parser.add_argument(
+        "url",
+        nargs="?",
+        default="",
+        help="URL of the article to download (default: empty string)"
+    )
+    
+    args = parser.parse_args()
+    download_and_save_content(args.url)
 
 
 if __name__ == "__main__":
