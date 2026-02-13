@@ -1,31 +1,48 @@
+import sys
 import datetime
 import trafilatura
+from pathlib import Path
 
-OUTPUT_DIR: str = "output"
+OUTPUT_DIR = Path("output")
+EXTRACT_OPTIONS = {
+    "include_comments": False,
+    "include_tables": False,
+    "output_format": "markdown",
+    "include_links": False,
+    "only_with_metadata": True,
+}
 
-def main():
-	url: str = "https://krzysztofjankowski.com/floppinux/floppinux-2025.html"
-	result: str = url_to_download(url)	
-	
 
-def url_to_download(url: str=None):
-	downloaded: str = trafilatura.fetch_url(url)
-	if downloaded is None:
-		print("Failed to download the content.")
-		return None
-	
-	content: str = trafilatura.extract(downloaded, include_comments=False, include_tables=False, output_format="markdown", include_links=False, only_with_metadata=True)
-	if content is None:
-		print("Failed to extract the content.")
-		return None
-	else:
-		metadata: trafilatura.settings.Document = trafilatura.extract_metadata(downloaded, "title")
-		if metadata is not None:
-			title: str = metadata.title if metadata.title else f"Untitled_{datetime.datetime.now().timestamp()}"
-			filename: str = f"{OUTPUT_DIR}/{title.replace(' ', '_')}.md"
-			with open(filename, "w", encoding="utf-8") as f:
-				f.write(content)
-				print(f"Content saved to {filename}")
+def download_and_save_content(url: str) -> None:
+    """Download content from URL and save it as a markdown file."""
+    if not url:
+        raise ValueError("URL cannot be empty")
+    
+    downloaded = trafilatura.fetch_url(url)
+    if downloaded is None:
+        print("Error: Failed to download the content.")
+        sys.exit(1)
+    
+    content = trafilatura.extract(downloaded, **EXTRACT_OPTIONS)
+    if content is None:
+        print("Error: Failed to extract content.")
+        sys.exit(2)
+    
+    metadata = trafilatura.extract_metadata(downloaded, "title")
+    title = (metadata.title or f"Untitled_{datetime.datetime.now().timestamp()}") if metadata else f"Untitled_{datetime.datetime.now().timestamp()}"
+    
+    OUTPUT_DIR.mkdir(exist_ok=True)
+    filename = OUTPUT_DIR / f"{title.replace(' ', '_')}.md"
+    
+    filename.write_text(content, encoding="utf-8")
+    print(f"Content saved to {filename}")
+
+
+def main() -> None:
+    """Main entry point."""
+    url = "https://krzysztofjankowski.com/floppinux/floppinux-2025.html"
+    download_and_save_content(url)
+
 
 if __name__ == "__main__":
-	main()
+    main()
