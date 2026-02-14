@@ -14,10 +14,13 @@ EXTRACT_OPTIONS = {
 }
 
 
-def download_and_save_content(url: str) -> None:
+def download_and_save_content(url: str, output_dir: Path = None) -> None:
     """Download content from URL and save it as a markdown file."""
     if not url:
         raise ValueError("URL cannot be empty")
+    
+    if output_dir is None:
+        output_dir = OUTPUT_DIR
     
     downloaded = trafilatura.fetch_url(url)
     if downloaded is None:
@@ -32,8 +35,8 @@ def download_and_save_content(url: str) -> None:
     metadata = trafilatura.extract_metadata(downloaded, "title")
     title = (metadata.title or f"Untitled_{datetime.datetime.now().timestamp()}") if metadata else f"Untitled_{datetime.datetime.now().timestamp()}"
     
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    filename = OUTPUT_DIR / f"{title.replace(' ', '_')}.md"
+    output_dir.mkdir(exist_ok=True)
+    filename = output_dir / f"{title.replace(' ', '_')}.md"
     
     filename.write_text(content, encoding="utf-8")
     print(f"Content saved to {filename}")
@@ -52,9 +55,16 @@ def main() -> None:
         default="",
         help="URL of the article to download (default: empty string)"
     )
+    parser.add_argument(
+        "--output",
+        "-o",
+        type=Path,
+        default=None,
+        help="Output directory for saved markdown files (default: output)"
+    )
     
     args = parser.parse_args()
-    download_and_save_content(args.url)
+    download_and_save_content(args.url, args.output)
 
 
 if __name__ == "__main__":
