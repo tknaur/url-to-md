@@ -3,7 +3,6 @@ import argparse
 import datetime
 import trafilatura
 from pathlib import Path
-from typing import Optional
 
 OUTPUT_DIR = Path("output")
 EXTRACT_OPTIONS = {
@@ -15,7 +14,7 @@ EXTRACT_OPTIONS = {
 }
 
 
-def download_and_save_content(url: str, output_dir: Optional[Path] = None) -> None:
+def download_and_save_content(url: str, output_dir: Path | None) -> None:
     """Download content from URL and save it as a markdown file."""
     if not url:
         raise ValueError("URL cannot be empty")
@@ -48,7 +47,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Download article content and save as markdown",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="Example:\n  python main.py https://example.com/article"
+        epilog="example:\n  python main.py https://example.com/article"
     )
     parser.add_argument(
         "--url",
