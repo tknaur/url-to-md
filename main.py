@@ -11,7 +11,7 @@ EXTRACT_OPTIONS = {
     "include_tables": False,
     "output_format": "markdown",
     "include_links": False,
-    "only_with_metadata": True,
+    "only_with_metadata": False,
 }
 
 
