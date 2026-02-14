@@ -3,6 +3,7 @@ import argparse
 import datetime
 import trafilatura
 from pathlib import Path
+from typing import Optional
 
 OUTPUT_DIR = Path("output")
 EXTRACT_OPTIONS = {
@@ -14,7 +15,7 @@ EXTRACT_OPTIONS = {
 }
 
 
-def download_and_save_content(url: str, output_dir: Path = None) -> None:
+def download_and_save_content(url: str, output_dir: Optional[Path] = None) -> None:
     """Download content from URL and save it as a markdown file."""
     if not url:
         raise ValueError("URL cannot be empty")
