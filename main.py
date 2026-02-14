@@ -50,8 +50,9 @@ def main() -> None:
         epilog="Example:\n  python main.py https://example.com/article"
     )
     parser.add_argument(
-        "url",
-        nargs="?",
+        "--url",
+        "-u",
+        type=str,
         default="",
         help="URL of the article to download (default: empty string)"
     )
