@@ -47,7 +47,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Download article content and save as markdown",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="example:\n  python main.py https://example.com/article"
+        epilog="example:\n  python url_to_md.py https://example.com/article"
     )
     parser.add_argument(
         "--url",
