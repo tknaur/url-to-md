@@ -36,8 +36,8 @@ def download_and_save_content(url: str, output_dir: Path | None) -> None:
     title = (metadata.title or f"Untitled_{datetime.datetime.now().timestamp()}") if metadata else f"Untitled_{datetime.datetime.now().timestamp()}"
     author = metadata.author if metadata and metadata.author else "Unknown"
     
-    # Add title as markdown header and author information
-    header = f"# {title}\n\nAuthor: {author}\n\n"
+    # Add title as markdown header and author information with URL
+    header = f"# {title}\n\nAuthor: {author}\n{url}\n\n"
     full_content = header + content
     
     output_dir.mkdir(exist_ok=True)
