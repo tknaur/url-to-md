@@ -21,7 +21,8 @@ def download_and_save_content(url: str, output_dir: Path | None) -> None:
     
     if output_dir is None:
         output_dir = OUTPUT_DIR
-    
+        
+    url = url.strip()
     downloaded = trafilatura.fetch_url(url)
     if downloaded is None:
         print("Error: Failed to download the content.")
