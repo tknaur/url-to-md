@@ -34,9 +34,10 @@ def download_and_save_content(url: str, output_dir: Path | None) -> None:
     
     metadata = trafilatura.extract_metadata(downloaded, "title")
     title = (metadata.title or f"Untitled_{datetime.datetime.now().timestamp()}") if metadata else f"Untitled_{datetime.datetime.now().timestamp()}"
+    author = metadata.author if metadata and metadata.author else "Unknown"
     
-    # Add title as markdown header at the beginning of the content
-    header = f"# {title}\n\n"
+    # Add title as markdown header and author information
+    header = f"# {title}\n\nAuthor: {author}\n\n"
     full_content = header + content
     
     output_dir.mkdir(exist_ok=True)
