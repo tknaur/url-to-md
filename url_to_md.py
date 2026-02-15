@@ -39,6 +39,12 @@ def download_and_save_content(url: str, output_dir: Path | None) -> None:
     
     # Add title as markdown header and author information with URL
     header = f"# {title}\n\nAuthor: {author}\n{url}\n\n"
+    
+    # Remove duplicate title from content if it starts with the same heading
+    content_lines = content.strip().split('\n')
+    if content_lines and content_lines[0] == f"# {title}":
+        content = '\n'.join(content_lines[1:]).strip()
+    
     full_content = header + content
     
     output_dir.mkdir(exist_ok=True)
