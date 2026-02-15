@@ -36,7 +36,8 @@ def download_and_save_content(url: str, output_dir: Path | None) -> None:
     title = (metadata.title or f"Untitled_{datetime.datetime.now().timestamp()}") if metadata else f"Untitled_{datetime.datetime.now().timestamp()}"
     
     output_dir.mkdir(exist_ok=True)
-    filename = output_dir / f"{title.replace(' ', '_')}.md"
+    date_prefix = datetime.datetime.now().strftime("%Y%m%d")
+    filename = output_dir / f"{date_prefix}_{title.replace(' ', '_')}.md"
     
     filename.write_text(content, encoding="utf-8")
     print(f"Content saved to {filename}")
