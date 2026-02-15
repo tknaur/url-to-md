@@ -35,11 +35,15 @@ def download_and_save_content(url: str, output_dir: Path | None) -> None:
     metadata = trafilatura.extract_metadata(downloaded, "title")
     title = (metadata.title or f"Untitled_{datetime.datetime.now().timestamp()}") if metadata else f"Untitled_{datetime.datetime.now().timestamp()}"
     
+    # Add title as markdown header at the beginning of the content
+    header = f"# {title}\n\n"
+    full_content = header + content
+    
     output_dir.mkdir(exist_ok=True)
     date_prefix = datetime.datetime.now().strftime("%Y%m%d")
     filename = output_dir / f"{date_prefix}_{title.replace(' ', '_')}.md"
     
-    filename.write_text(content, encoding="utf-8")
+    filename.write_text(full_content, encoding="utf-8")
     print(f"Content saved to {filename}")
 
 
